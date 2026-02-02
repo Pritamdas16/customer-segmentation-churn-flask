@@ -2,15 +2,22 @@ from flask import Flask, render_template, request
 import joblib
 import numpy as np
 import pandas as pd
+import os
 
 app = Flask(__name__)
 
 # ===============================
+# Absolute path setup (VERY IMPORTANT)
+# ===============================
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ARTIFACTS_DIR = os.path.join(BASE_DIR, "artifacts")
+
+# ===============================
 # Load trained artifacts
 # ===============================
-scaler = joblib.load("artifacts/scaler.pkl")
-kmeans = joblib.load("artifacts/kmeans_model.pkl")
-churn_model = joblib.load("artifacts/churn_model.pkl")
+scaler = joblib.load(os.path.join(ARTIFACTS_DIR, "scaler.pkl"))
+kmeans = joblib.load(os.path.join(ARTIFACTS_DIR, "kmeans_model.pkl"))
+churn_model = joblib.load(os.path.join(ARTIFACTS_DIR, "churn_model.pkl"))
 
 THRESHOLD = 0.35   # tuned threshold for churn
 
@@ -55,7 +62,7 @@ def predict():
             "Spending_Score",
             "Membership_Level",
             "Purchase_Frequency",
-            "segment"
+            "segment"   # MUST be lowercase (training-time feature)
         ]
     )
 
@@ -72,4 +79,4 @@ def predict():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
