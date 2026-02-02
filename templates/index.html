@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Customer Churn Prediction</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+  <div class="glass">
+    <div class="header">
+      <h1>Customer Segmentation & Churn</h1>
+      <span>Real-time ML Prediction</span>
+    </div>
+
+    <div class="body">
+      <form action="/predict" method="post">
+        <div class="grid">
+          <div class="col-4">
+            <label>Age</label>
+            <input type="number" name="age" required>
+          </div>
+
+          <div class="col-4">
+            <label>Gender</label>
+            <select name="gender">
+              <option value="0">Female</option>
+              <option value="1">Male</option>
+            </select>
+          </div>
+
+          <div class="col-4">
+            <label>Membership</label>
+            <select name="membership">
+              <option value="0">Basic</option>
+              <option value="1">Silver</option>
+              <option value="2">Gold</option>
+              <option value="3">Platinum</option>
+            </select>
+          </div>
+
+          <div class="col-6">
+            <label>Annual Income</label>
+            <input type="number" name="income" required>
+          </div>
+
+          <div class="col-6">
+            <label>Spending Score</label>
+            <input type="number" name="spending" required>
+          </div>
+
+          <div class="col-12">
+            <label>Purchase Frequency</label>
+            <input type="number" name="frequency" required>
+          </div>
+        </div>
+
+        <button class="btn" type="submit">Predict Churn Risk</button>
+      </form>
+
+      {% if churn %}
+      <div class="result">
+        <span class="badge {{ 'high' if churn=='High Risk' else 'low' }}">
+          {{ churn }}
+        </span>
+
+        <div class="kpi">
+          <div class="box">
+            <strong>Segment</strong>
+            <div>{{ segment }}</div>
+          </div>
+
+          <div class="box">
+            <strong>Probability</strong>
+            <div>{{ probability }}</div>
+            <div class="progress" style="margin-top:8px">
+              <div style="width: {{ (probability*100)|round(0) }}%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="footer">
+      © ML-Powered Churn Prediction • Flask + Scikit-learn
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
